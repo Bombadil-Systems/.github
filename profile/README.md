@@ -1,29 +1,38 @@
 # Bombadil Systems
 
-**Advanced Security Research & Testing Tools**
+**Security Testing Tools for Professional Validation**
 
-Bombadil Systems develops innovative security testing frameworks for penetration testers, red teams, and security consultancies. Our tools address real-world challenges in evaluating security controls and testing defensive systems.
+Bombadil Systems develops security testing frameworks for penetration testers, red teams, and security consultancies. Our tools address real-world challenges in validating security controls and testing defensive systems.
+
+---
 
 ## Featured Projects
 
 ### 🔧 Veriduct
-**Format Destruction Framework for Security Testing**
+**Format Destruction for Security Testing**
 
-Veriduct is a sophisticated security testing framework that eliminates file signatures while maintaining perfect reconstruction capability. Designed specifically for testing EDR, DLP, and detection systems in controlled environments.
+Veriduct systematically tests whether security controls detect based on behavior rather than just signatures. It destroys file format signatures while maintaining perfect reconstruction capability.
+
+**Validation Results:**
+- **Production Malware:** 143 detection events → 0 across Cobalt Strike, Emotet, ValleyRAT
+- **EICAR Baseline:** 65/68 → 0/68 on VirusTotal
+- **Behavioral Analysis:** ANY.RUN sandbox identifies processed files as benign
+- **Perfect Reconstruction:** SHA256 hash verification confirms bit-for-bit identical reassembly
 
 **Key Capabilities:**
-- Zero-detection format transformation (demonstrated 65/68 → 0/68 on VirusTotal with EICAR)
+- Header randomization (destroys format signatures)
+- Salted chunking (removes sequence information)
 - Perfect reconstruction with cryptographic verification
-- Multiple implementation options
-- Comprehensive testing and validation toolkit
+- Systematic framework for DLP/EDR testing
 
 **Use Cases:**
-- EDR bypass testing and validation
-- DLP system evaluation
-- Security control assessment
-- Red team tooling
+- Penetration testing (validate client DLP behavioral detection)
+- Red team operations (test EDR trust models)
+- Security validation (gap analysis: signature vs. behavioral detection)
 
-**Status:** Active development | Commercial licensing available
+**Repository:** [https://github.com/Bombadil-Systems/Veriduct-Core](https://github.com/Bombadil-Systems/Veriduct-Core)  
+**Website:** [veriduct.com](https://veriduct.com)  
+**Status:** Active development | Free version available | Commercial version Q1 2026
 
 ---
 
@@ -33,35 +42,82 @@ Founded in 2025, Bombadil Systems focuses on building practical security tools t
 
 **Core Philosophy:**
 - Security through understanding, not obscurity
-- Tools built for professional security testing
-- Emphasis on reconstruction and validation
+- Tools built for professional security testing with proper authorization
+- Emphasis on validation and reproducible results
 - Responsible research and disclosure
+
+**Founder:** Christopher Aziz  
+**Contact:** chris@bombadil.systems  
+**Website:** [bombadil.systems](https://bombadil.systems)
+
+---
+
+## What's Next
+
+### Current Status
+- ✅ Veriduct free version available (GitHub)
+- ✅ Technique validated (VirusTotal, ANY.RUN, live malware)
+- ✅ Presenting at DEF CON DC862 (December 5, 2025)
+- ✅ Commercial version in development
+
+### Next Steps
+- 📋 Vendor notification (responsible disclosure to EDR vendors)
+- 💬 Community feedback (gathering input on direction)
+- 🔬 Early access program (limited availability, Q1 2026)
+- 🤝 Seeking testing partners with EDR lab access
+
+**Interested in testing partnerships or early access?** Contact chris@bombadil.systems
+
+---
 
 ## Commercial Licensing
 
-Professional licensing available for Veriduct and other tools. Contact us for enterprise pricing and support options.
+Professional licensing available for Veriduct and future tools.
 
-**Veriduct Commercial License:** $2,500/year
-- Full framework access
-- Commercial use rights
-- Priority support
-- Updates and improvements
+**Veriduct Commercial License:**
+- **Status:** In development - Early access Q1 2026
+- **Features:** Semantic Shatter Mapping, XOR Entanglement, Substrate Poisoning, variable chunking
+- **Support:** Professional support and consulting available
+- **Contact:** chris@bombadil.systems
 
-## Contact
+**Free Version:**
+- Available now on GitHub
+- Basic format destruction (header randomization + salted chunking)
+- Perfect for proof-of-concept and educational use
+- MIT License with commercial use restrictions
 
-- **Website:** https://bombadil.systems/
-- **Email:** chris@bombadilsystems.com
-- **LinkedIn:** [Bombadil Systems](https://www.linkedin.com/company/bombadil-systems)
+---
 
 ## Presentations
 
 **DEF CON DC862 - December 5, 2025**  
 *"Veriduct: Format Destruction for Security Testing"*
 
+---
+
 ## Legal & Responsible Use
 
-All Bombadil Systems tools are designed for legitimate security testing in controlled environments with proper authorization. Users are responsible for compliance with applicable laws and regulations. Unauthorized use of these tools may be illegal.
+**⚠️ All Bombadil Systems tools are designed for authorized security testing only.**
+
+Users must:
+- ✅ Obtain explicit written authorization before testing systems
+- ✅ Use only on data they are authorized to access and process
+- ✅ Comply with all applicable laws and regulations
+- ✅ Follow responsible disclosure for identified vulnerabilities
+- ✅ Maintain appropriate data handling and retention practices
+
+**Unauthorized use may violate computer fraud, data protection, or other laws.**
+
+---
+
+## Connect
+
+- **Website:** [bombadil.systems](https://bombadil.systems)
+- **GitHub:** [@reapermunky](https://github.com/reapermunky) (founder)
+- **Veriduct:** [veriduct.com](https://veriduct.com)
 
 ---
 
 **Note:** This is the official GitHub presence for Bombadil Systems LLC. Individual repositories may have specific licensing terms and usage guidelines.
+
+**Bombadil Systems: Testing frameworks for security professionals who verify instead of trust.**
