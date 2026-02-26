@@ -1,123 +1,47 @@
 # Bombadil Systems
 
-**Security Testing Tools for Professional Validation**
+Security research company. We build tools that poke at the assumptions underneath how security products work.
 
-Bombadil Systems develops security testing frameworks for penetration testers, red teams, and security consultancies. Our tools address real-world challenges in validating security controls and testing defensive systems.
+## What we're looking at
 
----
+Many security scanners decide what a file is by reading its header. `%PDF` means PDF. `MZ` means EXE. If the header matches, they run their detection rules for that format. If it doesn't match anything they recognize, a lot of them just skip it.
 
-## Featured Projects
+We've been building tools that test what happens when you mess with that assumption, and with some of the other assumptions stacked on top of it. The short version is: things fall apart faster than you'd expect.
 
-### 🔧 Veriduct
-**Format Destruction for Security Testing**
+## Tools
 
-Veriduct systematically tests whether security controls detect based on behavior rather than just signatures. It destroys file format signatures while maintaining perfect reconstruction capability.
+**Veriduct** started it all. It strips file headers and breaks files into salted chunks stored as a SQLite database. The scanner sees a database, not a PDF or an EXE. We tested it against Cobalt Strike, Emotet, and ValleyRAT samples on VirusTotal and went from 143 combined detections to zero. Reconstruction is bit-for-bit perfect (SHA256 verified). Presented at DEF CON DC862 and BSidesROC.
 
-**Validation Results:**
-- **Production Malware:** 143 detection events → 0 across Cobalt Strike, Emotet, ValleyRAT
-- **EICAR Baseline:** 65/68 → 0/68 on VirusTotal
-- **Behavioral Analysis:** ANY.RUN sandbox identifies processed files as benign
-- **Perfect Reconstruction:** SHA256 hash verification confirms bit-for-bit identical reassembly
+**BIRL** (Byte Interpretation Rewriting Language) came out of wanting to understand *why* Veriduct works so well. It maps which bytes inside a file actually get read by parsers and which get ignored. Turns out most PE scanners only look at the entry point region and skip everything else. BIRL measures that gap, and can build polyglots and inject payloads into the parts nobody's reading. About 9,000 lines of Python covering PE, ELF, ZIP, PNG, x86, and UTF-8.
 
-**Key Capabilities:**
-- Header randomization (destroys format signatures)
-- Salted chunking (removes sequence information)
-- Perfect reconstruction with cryptographic verification
-- Systematic framework for DLP/EDR testing
+**Latent Logic** is a Z3 constraint solver for Windows privilege escalation. You give it your current integrity level and privileges, it finds chains of operations to get to SYSTEM. It also does evasion path discovery, finding payload placements that fall in regions most static scanners don't inspect. The scanner coverage data comes from empirical testing across 24 engines, categorized by behavior rather than named individually.
 
-**Use Cases:**
-- Penetration testing (validate client DLP behavioral detection)
-- Red team operations (test EDR trust models)
-- Security validation (gap analysis: signature vs. behavioral detection)
+**Tnsyr** is a weird one. It runs Windows x64 binaries in a browser, using pure JavaScript, no plugins. It parses PE headers, resolves imports, applies relocations, interprets x86-64 instructions, and has about 580 Win32 API function stubs. It's for watching what a binary does in a controlled environment without giving it a real system.
 
-**Repository:** [https://github.com/Bombadil-Systems/Veriduct-Core](https://github.com/Bombadil-Systems/Veriduct-Core)  
-**Website:** [veriduct.com](https://veriduct.com)  
-**Status:** Active development | Free version available | Commercial version Q1 2026
+**OIS-ROP** is a different approach entirely. Every byte value from 0x00 to 0xFF already exists somewhere inside kernel32.dll. So instead of storing payload bytes, you store a list of offsets into signed Microsoft DLLs. At runtime you just read the byte at each offset. The payload never exists as bytes until assembly. The file on disk is just a list of numbers.
 
----
+## How they fit together
 
-## About Bombadil Systems
+Veriduct proved that removing format signatures kills detection. That raised the question of what scanners are actually parsing, which led to BIRL. BIRL's coverage data feeds into Latent Logic's solver. Tnsyr exists because we wanted to watch PE execution without trusting a sandbox. OIS-ROP started as a "what if the payload itself doesn't need to exist" experiment.
 
-Founded in 2025, Bombadil Systems focuses on building practical security tools that address real-world testing challenges. Our research emphasizes rigorous technical implementation and responsible disclosure practices.
+They weren't planned as a suite. They grew out of each other.
 
-**Core Philosophy:**
-- Security through understanding, not obscurity
-- Tools built for professional security testing with proper authorization
-- Emphasis on validation and reproducible results
-- Responsible research and disclosure
+## Repos
 
-**Founder:** Christopher Aziz  
-**Contact:** chris@bombadil.systems  
-**Website:** [bombadil.systems](https://bombadil.systems)
+| Project | Description |
+|---------|------------|
+| [Veriduct-Core](https://github.com/Bombadil-Systems/Veriduct-Core) | Format destruction for security testing |
+| [birl](https://github.com/Bombadil-Systems/birl) | Parser coverage analysis, residue measurement, polyglot construction |
+| [latent-logic](https://github.com/Bombadil-Systems/latent-logic) | Z3 privesc and evasion path solver |
+| [tnsyr](https://github.com/Bombadil-Systems/tnsyr) | Browser-native PE runtime |
+| [ois-rop](https://github.com/Bombadil-Systems/ois-rop) | Payload projection from signed binary offsets |
 
----
+## Talks
 
-## What's Next
+DEF CON DC862 (Dec 2025) and BSidesROC. Both on Veriduct and format destruction.
 
-### Current Status
-- ✅ Veriduct free version available (GitHub)
-- ✅ Technique validated (VirusTotal, ANY.RUN, live malware)
-- ✅ Presenting at DEF CON DC862 (December 5, 2025)
-- ✅ Commercial version in development
+## Contact
 
-### Next Steps
-- 📋 Vendor notification (responsible disclosure to EDR vendors)
-- 💬 Community feedback (gathering input on direction)
-- 🔬 Early access program (limited availability, Q1 2026)
-- 🤝 Seeking testing partners with EDR lab access
+Chris Aziz / chris@bombadil.systems
 
-**Interested in testing partnerships or early access?** Contact chris@bombadil.systems
-
----
-
-## Commercial Licensing
-
-Professional licensing available for Veriduct and future tools.
-
-**Veriduct Commercial License:**
-- **Status:** In development - Early access Q1 2026
-- **Features:** Semantic Shatter Mapping, XOR Entanglement, Substrate Poisoning, variable chunking
-- **Support:** Professional support and consulting available
-- **Contact:** chris@bombadil.systems
-
-**Free Version:**
-- Available now on GitHub
-- Basic format destruction (header randomization + salted chunking)
-- Perfect for proof-of-concept and educational use
-- MIT License with commercial use restrictions
-
----
-
-## Presentations
-
-**DEF CON DC862 - December 5, 2025**  
-*"Veriduct: Format Destruction for Security Testing"*
-
----
-
-## Legal & Responsible Use
-
-**⚠️ All Bombadil Systems tools are designed for authorized security testing only.**
-
-Users must:
-- ✅ Obtain explicit written authorization before testing systems
-- ✅ Use only on data they are authorized to access and process
-- ✅ Comply with all applicable laws and regulations
-- ✅ Follow responsible disclosure for identified vulnerabilities
-- ✅ Maintain appropriate data handling and retention practices
-
-**Unauthorized use may violate computer fraud, data protection, or other laws.**
-
----
-
-## Connect
-
-- **Website:** [bombadil.systems](https://bombadil.systems)
-- **GitHub:** [@reapermunky](https://github.com/reapermunky) (founder)
-- **Veriduct:** [veriduct.com](https://veriduct.com)
-
----
-
-**Note:** This is the official GitHub presence for Bombadil Systems LLC. Individual repositories may have specific licensing terms and usage guidelines.
-
-**Bombadil Systems: Testing frameworks for security professionals who verify instead of trust.**
+Everything here is MIT licensed and intended for authorized security testing.
