@@ -30,7 +30,7 @@ They weren't planned as a suite. They grew out of each other.
 
 | Project | Description |
 |---------|------------|
-| [Veriduct-Core](https://github.com/Bombadil-Systems/Veriduct-Core) | Format destruction for security testing |
+| [Veriduct-Prime](https://github.com/Bombadil-Systems/Veriduct-Prime) | Format destruction for security testing |
 | [birl](https://github.com/Bombadil-Systems/birl) | Parser coverage analysis, residue measurement, polyglot construction |
 | [latent-logic](https://github.com/Bombadil-Systems/latent-logic) | Z3 privesc and evasion path solver |
 | [tnsyr](https://github.com/Bombadil-Systems/tnsyr) | Browser-native PE runtime |
